@@ -10,7 +10,8 @@ type RefreshTokenRow = {
 };
 
 export class RefreshTokenMockRepository implements RefreshTokensRepository {
-  constructor(private rows: RefreshTokenRow[] = []) {}
+  constructor(private rows: RefreshTokenRow[] = []) {
+  }
 
   create(refreshToken: RefreshToken): Promise<void> {
     this.rows.push({
@@ -31,7 +32,7 @@ export class RefreshTokenMockRepository implements RefreshTokensRepository {
     }
 
     return Promise.resolve(
-      new RefreshToken(row.userId, row.token, row.expiryAt, row.issuedAt),
+      new RefreshToken(row.userId, row.token, row.issuedAt, row.expiryAt),
     );
   }
 

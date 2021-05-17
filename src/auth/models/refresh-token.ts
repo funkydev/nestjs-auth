@@ -7,6 +7,6 @@ export class RefreshToken {
   ) {}
 
   isValid(): boolean {
-    return this.expiryAt >= Date.now();
+    return this.expiryAt === null || this.expiryAt >= Date.now();
   }
 }
