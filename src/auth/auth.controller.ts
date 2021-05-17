@@ -1,5 +1,5 @@
-import { Controller, Post, Request, Get } from '@nestjs/common';
-import { AccessTokenAuth, PasswordAuth } from './auth.decorators';
+import { Controller, Post, Request } from '@nestjs/common';
+import { PasswordAuth } from './auth.decorators';
 import { AuthService } from './auth.service';
 
 @Controller('/auth')
@@ -13,11 +13,5 @@ export class AuthController {
     const refreshToken = this.authService.generateRefreshToken(req.user);
 
     return { accessToken, refreshToken };
-  }
-
-  @Get('/current')
-  @AccessTokenAuth()
-  async getUserDetails(@Request() req) {
-    return req.user;
   }
 }
