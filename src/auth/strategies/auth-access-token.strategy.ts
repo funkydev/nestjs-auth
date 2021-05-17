@@ -30,9 +30,9 @@ export class AuthAccessTokenStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     try {
-      const email = payload.username;
+      const userId = payload.sub;
 
-      return await this.usersRepository.findByEmail(email);
+      return await this.usersRepository.findById(userId);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new UnauthorizedException();

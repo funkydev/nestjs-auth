@@ -24,7 +24,7 @@ export class AuthService {
   ) {}
 
   generateAccessToken(user: User): TokenResult {
-    const payload = { username: user.email, sub: user.email };
+    const payload = { username: user.email, sub: user.id };
     const token = this.jwtService.sign(payload);
     const decoded = this.jwtService.decode(token);
     const expiryAt = new Date(+decoded['exp'] * 1000);
