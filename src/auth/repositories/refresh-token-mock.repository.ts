@@ -23,7 +23,7 @@ export class RefreshTokenMockRepository implements RefreshTokensRepository {
     return Promise.resolve();
   }
 
-  get(token: string): Promise<RefreshTokenRow> {
+  get(token: string): Promise<RefreshToken> {
     const row = this.rows.find((_) => _.token === token);
 
     if (!row) {

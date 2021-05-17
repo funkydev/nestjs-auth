@@ -9,7 +9,7 @@ import {
 import { IUserService, UsersService } from '../../users/users.service';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class AuthPasswordStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(IUserService)
     private usersService: UsersService,

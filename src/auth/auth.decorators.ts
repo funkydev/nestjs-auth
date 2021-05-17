@@ -1,11 +1,11 @@
 import { applyDecorators, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-export const PasswordAuth = () =>
+export const AuthPassword = () =>
   applyDecorators(UseGuards(AuthGuard('local')));
 
-export const AccessTokenAuth = () =>
+export const AuthAccessToken = () =>
   applyDecorators(UseGuards(AuthGuard('jwt')));
 
-export const RefreshTokenAuth = () =>
+export const AuthRefreshToken = () =>
   applyDecorators(UseGuards(AuthGuard('token')));

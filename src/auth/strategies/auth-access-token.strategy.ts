@@ -11,7 +11,7 @@ import { IAuthConfig } from '../auth.consts';
 import { AuthModuleConfig } from '../auth.types';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class AuthAccessTokenStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(IAuthConfig)
     private readonly authConfig: AuthModuleConfig,

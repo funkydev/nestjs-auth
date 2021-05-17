@@ -13,7 +13,9 @@ import {
 } from '../repositories/refresh-tokens.repository';
 
 @Injectable()
-export class AuthRefreshStrategy extends PassportStrategy(UniqueTokenStrategy) {
+export class AuthRefreshTokenStrategy extends PassportStrategy(
+  UniqueTokenStrategy,
+) {
   constructor(
     @Inject(IRefreshTokenRepository)
     private readonly refreshTokenRepository: RefreshTokensRepository,
