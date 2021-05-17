@@ -4,6 +4,11 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/models/user';
 import { IAuthConfig } from './auth.consts';
 import { AuthModuleConfig } from './auth.types';
+import { RefreshToken } from './models/refresh-token';
+import {
+  IRefreshTokenRepository,
+  RefreshTokensRepository,
+} from './repositories/refresh-tokens.repository';
 
 type TokenResult = { expiryAt: number; value: string };
 
@@ -14,6 +19,8 @@ export class AuthService {
     private readonly authConfig: AuthModuleConfig,
     @Inject(JwtService)
     private readonly jwtService: JwtService,
+    @Inject(IRefreshTokenRepository)
+    private readonly refreshTokenRepository: RefreshTokensRepository,
   ) {}
 
   generateAccessToken(user: User): TokenResult {
@@ -25,7 +32,7 @@ export class AuthService {
     return { expiryAt: expiryAt.getTime(), value: token };
   }
 
-  generateRefreshToken(user: User): TokenResult {
+  async generateRefreshToken(user: User): Promise<TokenResult> {
     const token = randomBytes(256 / 8).toString('base64');
     const currentTime = Math.floor(Date.now() / 1000) * 1000; // without ms
     const expiryAt =
@@ -33,6 +40,10 @@ export class AuthService {
       this.authConfig.refreshTokenExpiresIn !== Infinity
         ? new Date(currentTime + +this.authConfig.refreshTokenExpiresIn)
         : new Date(Infinity);
+
+    await this.refreshTokenRepository.create(
+      new RefreshToken(user.id, token, Date.now(), expiryAt.getTime()),
+    );
 
     return { expiryAt: expiryAt.getTime(), value: token };
   }

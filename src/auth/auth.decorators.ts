@@ -6,3 +6,6 @@ export const PasswordAuth = () =>
 
 export const AccessTokenAuth = () =>
   applyDecorators(UseGuards(AuthGuard('jwt')));
+
+export const RefreshTokenAuth = () =>
+  applyDecorators(UseGuards(AuthGuard('token')));

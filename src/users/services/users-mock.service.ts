@@ -15,4 +15,14 @@ export class UsersMockService implements UsersService {
 
     return new User(userRow.id, userRow.email, userRow.passwordHash);
   }
+
+  async findById(id: string): Promise<User> {
+    const userRow = this.users.find((user) => user.id === id);
+
+    if (!userRow) {
+      throw new NotFoundException('User does not exist');
+    }
+
+    return new User(userRow.id, userRow.email, userRow.passwordHash);
+  }
 }
