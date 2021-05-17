@@ -6,20 +6,23 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { IUserService, UsersService } from '../../users/users.service';
+import {
+  IUsersRepository,
+  UsersRepository,
+} from '../../users/repositories/users.repository';
 
 @Injectable()
 export class AuthPasswordStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(IUserService)
-    private usersService: UsersService,
+    @Inject(IUsersRepository)
+    private usersRepository: UsersRepository,
   ) {
     super();
   }
 
   async validate(email: string, password: string): Promise<any> {
     try {
-      const user = await this.usersService.findByEmail(email);
+      const user = await this.usersRepository.findByEmail(email);
 
       if (!user.validatePassword(password)) {
         throw new UnauthorizedException();

@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import { UsersMockData } from './services/users-mock.data';
+import { UsersMockData } from './repositories/users-mock.data';
 import { UsersController } from './users.controller';
-import { IUserService } from './users.service';
-import { UsersMockService } from './services/users-mock.service';
+import { IUsersRepository } from './repositories/users.repository';
+import { UsersMockRepository } from './repositories/users-mock.repository';
 
 @Module({
   controllers: [UsersController],
   providers: [
-    { provide: IUserService, useValue: new UsersMockService(UsersMockData) },
+    {
+      provide: IUsersRepository,
+      useValue: new UsersMockRepository(UsersMockData),
+    },
   ],
-  exports: [IUserService],
+  exports: [IUsersRepository],
 })
 export class UsersModule {}

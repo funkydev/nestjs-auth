@@ -6,7 +6,10 @@ import {
 } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { UniqueTokenStrategy } from 'passport-unique-token';
-import { IUserService, UsersService } from '../../users/users.service';
+import {
+  IUsersRepository,
+  UsersRepository,
+} from '../../users/repositories/users.repository';
 import {
   IRefreshTokenRepository,
   RefreshTokensRepository,
@@ -19,8 +22,8 @@ export class AuthRefreshTokenStrategy extends PassportStrategy(
   constructor(
     @Inject(IRefreshTokenRepository)
     private readonly refreshTokenRepository: RefreshTokensRepository,
-    @Inject(IUserService)
-    private readonly userService: UsersService,
+    @Inject(IUsersRepository)
+    private readonly usersRepository: UsersRepository,
   ) {
     super({ tokenHeader: 'X-Refresh-Token', failOnMissing: false });
   }
@@ -35,7 +38,7 @@ export class AuthRefreshTokenStrategy extends PassportStrategy(
         throw new UnauthorizedException('Refresh token has been expired');
       }
 
-      return await this.userService.findById(refreshToken.userId);
+      return await this.usersRepository.findById(refreshToken.userId);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new UnauthorizedException();

@@ -1,9 +1,9 @@
 import { NotFoundException } from '@nestjs/common';
 import { UsersMockRow } from './users-mock.data';
-import { UsersService } from '../users.service';
+import { UsersRepository } from './users.repository';
 import { User } from '../models/user';
 
-export class UsersMockService implements UsersService {
+export class UsersMockRepository implements UsersRepository {
   constructor(private readonly users: UsersMockRow[] = []) {}
 
   async findByEmail(email: string): Promise<User> {

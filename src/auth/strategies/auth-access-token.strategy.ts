@@ -6,7 +6,10 @@ import {
 } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { IUserService, UsersService } from '../../users/users.service';
+import {
+  IUsersRepository,
+  UsersRepository,
+} from '../../users/repositories/users.repository';
 import { IAuthConfig } from '../auth.consts';
 import { AuthModuleConfig } from '../auth.types';
 
@@ -15,8 +18,8 @@ export class AuthAccessTokenStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(IAuthConfig)
     private readonly authConfig: AuthModuleConfig,
-    @Inject(IUserService)
-    private readonly usersService: UsersService,
+    @Inject(IUsersRepository)
+    private readonly usersRepository: UsersRepository,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -29,7 +32,7 @@ export class AuthAccessTokenStrategy extends PassportStrategy(Strategy) {
     try {
       const email = payload.username;
 
-      return await this.usersService.findByEmail(email);
+      return await this.usersRepository.findByEmail(email);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new UnauthorizedException();
